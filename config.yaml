@@ -1,4 +1,7 @@
 units:
+  # unit size
+  us: U
+
   # Proxy Spacing Variables
   tpx: 65
   tpy: 49
@@ -6,16 +9,15 @@ units:
   cirque_R: cirque_D / 2
   cirque_holder_D: 46.13
   cirque_holder_R: cirque_holder_D / 2
-  cirque_holder_L: cirque_holder_D + 8
+  cirque_cover_L: cirque_holder_D + 12
+  cirque_holder_L: cirque_holder_D + 16
   cirque_holder_screw: cirque_holder_R - 1
 
-
-  # Padding Variables
-  pu: u + 4
   # outlines value
-  outline_margin: 0.7
+  outline_margin: 0.6
   smoothing: 5
   screwSize: 2.25
+  screwMargin: 2
 
 points:
   zones:
@@ -23,8 +25,8 @@ points:
       anchor:
         shift: [70,-100]
       key:
-        padding: 1u
-        spread: 1u
+        padding: 1us
+        spread: 1us
       columns:
         pinky:
           key:
@@ -32,19 +34,19 @@ points:
             column_net: P4
         ring:
           key:
-            stagger: 0.7u
+            stagger: 0.7us
             column_net: P5
         middle:
           key:
-            stagger: 0.4u
+            stagger: 0.4us
             column_net: P18
         index:
           key:
-            stagger: -0.3u
+            stagger: -0.3us
             column_net: P19
         inner:
           key:
-            stagger: -0.2u
+            stagger: -0.2us
             column_net: P20
       rows:
         bottom:
@@ -59,21 +61,21 @@ points:
 
     thumbs:
       key:
-        padding: 1u
-        spread: 1u
+        padding: 1us
+        spread: 1us
       anchor:
           ref: matrix_inner_bottom
-          shift: [-0.5u, -1.2u]
+          shift: [-0.5us, -1.2us]
       columns:
         layer:
           key:
             splay: -15
-            column_net: P18
+            column_net: P5
         space:
           key:
             splay: -15
             shift: [4,-2]
-            column_net: P19
+            column_net: P18
       rows:
         cluster:
           row_net: P10
@@ -81,9 +83,8 @@ points:
 
     mousekey:
       key:
-        padding: 1u
-        spread: 1u
-        shift: [3.4u,0.8u]
+        padding: 1us
+        spread: 1us
         orient: 50
       anchor:
         ref: thumbs_space_cluster
@@ -91,6 +92,12 @@ points:
         one:
           key:
             rotate: -40
+            shift: [3.2us,0.5us]
+            column_net: P19
+        two:
+          key:
+            rotate: -10
+            shift: [3.85us,0.65us]
             column_net: P20
       rows:
         one:
@@ -99,99 +106,109 @@ points:
 
   mirror:
     ref: matrix_inner_top
-    distance: 9u
+    distance: 9us
   rotate: -20
 
 outlines:
-  raw:
-    - what: rectangle
-      where: true
-      bound: true
-      size: [pu,pu]
   keys:
     - what: rectangle
       where: true
       bound: false
-      size: [u-0.5,u-0.5]
+      size: [us-0.01,us-0.01]
   key_hole:
     - what: rectangle
       where: true
       bound: false
-      size: [14,14]
+      size: [14.02,14.02]
   board:
     - what: polygon
       operation: stack
       fillet: smoothing
       points:
         - ref: matrix_pinky_top
-          shift: [-1 * outline_margin * u,outline_margin * u]
+          shift: [-1 * outline_margin * us,outline_margin * us]
         - ref: matrix_ring_top
-          shift: [-1 * outline_margin * u,outline_margin * u]
+          shift: [-1 * outline_margin * us,outline_margin * us]
         - ref: matrix_middle_top
-          shift: [-1 * outline_margin * u,outline_margin * u]
+          shift: [-1 * outline_margin * us,outline_margin * us]
         - ref: matrix_middle_top
-          shift: [outline_margin * u,outline_margin * u]
+          shift: [outline_margin * us,outline_margin * us]
 
         - ref: mirror_matrix_middle_top
-          shift: [outline_margin * u,outline_margin * u]
+          shift: [outline_margin * us,outline_margin * us]
         - ref: mirror_matrix_middle_top
-          shift: [-1 * outline_margin * u,outline_margin * u]
+          shift: [-1 * outline_margin * us,outline_margin * us]
         - ref: mirror_matrix_ring_top
-          shift: [-1 * outline_margin * u,outline_margin * u]
+          shift: [-1 * outline_margin * us,outline_margin * us]
         - ref: mirror_matrix_pinky_top
-          shift: [-1 * outline_margin * u,outline_margin * u]
+          shift: [-1 * outline_margin * us,outline_margin * us]
 
         - ref: mirror_matrix_pinky_bottom
-          shift: [-1 * outline_margin * u,-1 * outline_margin * u]
+          shift: [-1 * outline_margin * us,-1 * outline_margin * us]
         - ref: mirror_thumbs_layer_cluster
-          shift: [-1 * outline_margin * u,-1 * outline_margin * u]
+          shift: [-1 * outline_margin * us,-1 * outline_margin * us]
         - ref: mirror_thumbs_space_cluster
-          shift: [-1 * outline_margin * u,-1 * outline_margin * u]
+          shift: [-1 * outline_margin * us,-1 * outline_margin * us]
         - ref: mirror_thumbs_layer_cluster
-          shift: [outline_margin * u,-1 * outline_margin * u]
+          shift: [outline_margin * us,-1 * outline_margin * us]
         - ref: mirror_thumbs_space_cluster
-          shift: [outline_margin * u,-1 * outline_margin * u]
+          shift: [outline_margin * us,-1 * outline_margin * us]
 
         - ref: mirror_mousekey_one_one
-          shift: [outline_margin * u,-1 * outline_margin * u]
+          shift: [-1 * outline_margin * us,-1 * outline_margin * us]
+        - ref: mirror_mousekey_one_one
+          shift: [outline_margin * us,-1 * outline_margin * us]
+        - ref: mirror_mousekey_two_one
+          shift: [-1 * outline_margin * us,-1 * outline_margin * us]
+        - ref: mirror_mousekey_two_one
+          shift: [outline_margin * us,-1 * outline_margin * us]
+        - ref: mousekey_two_one
+          shift: [outline_margin * us,-1 * outline_margin * us]
+        - ref: mousekey_two_one
+          shift: [-1 * outline_margin * us,-1 * outline_margin * us]
         - ref: mousekey_one_one
-          shift: [outline_margin * u,-1 * outline_margin * u]
+          shift: [outline_margin * us,-1 * outline_margin * us]
+        - ref: mousekey_one_one
+          shift: [-1 * outline_margin * us,-1 * outline_margin * us]
 
         - ref: thumbs_space_cluster
-          shift: [outline_margin * u,-1 * outline_margin * u]
+          shift: [outline_margin * us,-1 * outline_margin * us]
         - ref: thumbs_layer_cluster
-          shift: [outline_margin * u,-1 * outline_margin * u]
+          shift: [outline_margin * us,-1 * outline_margin * us]
         - ref: thumbs_space_cluster
-          shift: [-1 * outline_margin * u,-1 * outline_margin * u]
+          shift: [-1 * outline_margin * us,-1 * outline_margin * us]
         - ref: thumbs_layer_cluster
-          shift: [-1 * outline_margin * u,-1 * outline_margin * u]
+          shift: [-1 * outline_margin * us,-1 * outline_margin * us]
         - ref: matrix_pinky_bottom
-          shift: [-1 * outline_margin * u,-1 * outline_margin * u]
-  combo:
-    - name: board
-    - operation: subtract
-      name: keys
+          shift: [-1 * outline_margin * us,-1 * outline_margin * us]
 
 # touch pad
-  touchpad_hole:
+  touchpad_cover_hole:
     - what: circle
       radius: cirque_R
       where:
         ref.aggregate.parts: [matrix_inner_home, mirror_matrix_inner_home]
-        shift: [0.0u, 0.0u]
+        shift: [0.0us, 0.0us]
+
+  touchpad_plate_hole:
+    - what: circle
+      radius: cirque_R-1
+      where:
+        ref.aggregate.parts: [matrix_inner_home, mirror_matrix_inner_home]
+        shift: [0.0us, 0.0us]
 
   touchpad_holder_hole_big:
     - what: circle
       radius: cirque_holder_R
       where:
         ref.aggregate.parts: [matrix_inner_home, mirror_matrix_inner_home]
-        shift: [0.0u, 0.0u]
+        shift: [0.0us, 0.0us]
   touchpad_holder_hole_small:
     - what: circle
       radius: 0.4
       where:
         ref.aggregate.parts: [matrix_inner_home, mirror_matrix_inner_home]
-        shift: [0.0u, 0.0u + cirque_holder_R - 0.1]
+        shift: [0.0us, 0.0us + cirque_holder_R - 0.1]
   touchpad_holder_hole:
     - name: touchpad_holder_hole_big
     - operation: subtract
@@ -200,44 +217,17 @@ outlines:
   touchpad_holder_outline:
     - what: rectangle
       size: cirque_holder_L
-      corner: 2
+      corner: 3
       where:
         ref.aggregate.parts: [matrix_inner_home, mirror_matrix_inner_home]
-        shift: [0.0u, 0.0u]
-
-  promicro_base:
+        shift: [0.0us, 0.0us]
+  touchpad_cover_outline:
     - what: rectangle
-      size: [30,30]
-      corner: 2
+      size: cirque_cover_L
+      corner: 3
       where:
-          ref.aggregate.parts: [matrix_inner_top, mirror_matrix_inner_top]
-          shift: [0,0]
-
-  touchpad_holder:
-    - name: touchpad_holder_outline
-    - operation: subtract
-      name: touchpad_holder_hole
-  touchpad_cover:
-    - name: touchpad_holder_outline
-    - operation: subtract
-      name: touchpad_hole
-    - name: touchpad_cover
-    - operation: subtract
-      name: promicro_base
-  
-  touchpad_promicro:
-    - name: touchpad_holder_outline
-    - operation: subtract
-      name: promicro_base
-
-# top plate
-  top_plate:
-    - name: board
-    - operation: subtract
-      name: key_hole
-    - name: top_plate
-    - operation: subtract
-      name: touchpad_hole
+        ref.aggregate.parts: [matrix_inner_home, mirror_matrix_inner_home]
+        shift: [0.0us, 0.0us]
 
 # pcb mount hole
   mounting:
@@ -245,103 +235,120 @@ outlines:
       radius: screwSize
       where:
         ref: [matrix_pinky_top]
-        shift: [0u, 0.8u]
+        shift: [0.2us, 0.7us]
     - what: circle
       radius: screwSize
       where:
         ref: [matrix_pinky_bottom]
-        shift: [1u, -0.2u]
+        shift: [1us, -0.2us]
     - what: circle
       radius: screwSize
       where:
         ref: [matrix_inner_top]
-        shift: [0u, 1u]
+        shift: [0us, 1us]
     - what: circle
       radius: screwSize
       where:
         ref: [matrix_inner_top]
-        shift: [2u, 1.8u]
+        shift: [2us, 1.8us]
     - what: circle
       radius: screwSize
       where:
         ref: [matrix_inner_home]
-        shift: [2u, 0u]
+        shift: [2us, 0us]
     - what: circle
       radius: screwSize
       where:
         ref: [thumbs_space_cluster]
-        shift: [0.2u, 0.8u]
+        shift: [0.2us, 0.8us]
 
     - what: circle
       radius: screwSize
       where:
         ref: [mirror_matrix_pinky_top]
-        shift: [0u, 0.8u]
+        shift: [0.2us, 0.7us]
     - what: circle
       radius: screwSize
       where:
         ref: [mirror_matrix_pinky_bottom]
-        shift: [1u, -0.2u]
+        shift: [1us, -0.2us]
     - what: circle
       radius: screwSize
       where:
         ref: [mirror_matrix_inner_top]
-        shift: [0u, 1u]
+        shift: [0us, 1us]
     - what: circle
       radius: screwSize
       where:
         ref: [mirror_matrix_inner_top]
-        shift: [2u, 1.8u]
+        shift: [2us, 1.8us]
     - what: circle
       radius: screwSize
       where:
         ref: [mirror_matrix_inner_home]
-        shift: [2u, 0u]
+        shift: [2us, 0us]
     - what: circle
       radius: screwSize
       where:
         ref: [mirror_thumbs_space_cluster]
-        shift: [0.2u, 0.8u]
+        shift: [0.2us, 0.8us]
 
     - what: circle
       radius: screwSize
       where:
         ref.aggregate.parts: [matrix_inner_home, mirror_matrix_inner_home]
-        shift: [0u, -2.0u]
+        shift: [0us, -3.0us]
   cover_mounting:
     - what: circle
-      radius: screwSize + 2
+      radius: screwSize + screwMargin
       where:
         ref.aggregate.parts: [matrix_inner_home, mirror_matrix_inner_home]
         shift: [cirque_holder_screw, cirque_holder_screw]
     - what: circle
-      radius: screwSize + 2
+      radius: screwSize + screwMargin
       where:
         ref.aggregate.parts: [matrix_inner_home, mirror_matrix_inner_home]
         shift: [-cirque_holder_screw, cirque_holder_screw]
     - what: circle
-      radius: screwSize + 2
+      radius: screwSize + screwMargin
       where:
         ref.aggregate.parts: [matrix_inner_home, mirror_matrix_inner_home]
         shift: [cirque_holder_screw, -cirque_holder_screw]
     - what: circle
-      radius: screwSize + 2
+      radius: screwSize + screwMargin
       where:
         ref.aggregate.parts: [matrix_inner_home, mirror_matrix_inner_home]
         shift: [-cirque_holder_screw, -cirque_holder_screw]
 
-# pcb plate
-  pcb_plate_without_touchpad:
+# output
+  touchpad_holder:
+    - name: touchpad_holder_outline
+    - operation: subtract
+      name: touchpad_holder_hole
+  touchpad_cover:
+    - name: touchpad_cover_outline
+    - operation: subtract
+      name: touchpad_cover_hole
+  top_plate:
     - name: board
     - operation: subtract
-      name: mounting
-  pcb_plate:
-    - name: pcb_plate_without_touchpad
+      name: key_hole
+    - name: top_plate
     - operation: subtract
-      name: touchpad_promicro
+      name: touchpad_plate_hole
+  pcb_plate:
+    - name: board
+    - operation: subtract
+      name: cover_mounting
+    - name: pcb_plate
+    - operation: subtract
+      name: mounting
 
 # test
   test:
+    - name: test
+    - operation: stack
+      name: keys
     - name: test
     - operation: stack
       name: touchpad_cover
@@ -491,7 +498,7 @@ pcbs:
         what: mountinghole
         where:
           ref: [matrix_pinky_top]
-          shift: [0u, 0.8u]
+          shift: [0.2us, 0.7us]
       matrix_pinky_bottom:
         what: mountinghole
         where:
@@ -522,7 +529,7 @@ pcbs:
         what: mountinghole
         where:
           ref: [mirror_matrix_pinky_top]
-          shift: [0u, 0.8u]
+          shift: [0.2us, 0.7us]
       mirror_matrix_pinky_bottom:
         what: mountinghole
         where:
@@ -553,7 +560,7 @@ pcbs:
         what: mountinghole
         where:
           ref.aggregate.parts: [matrix_inner_home, mirror_matrix_inner_home]
-          shift: [0u, -2.0u]
+          shift: [0u, -3.0u]
   bottom_plate:
     outlines:
       main:
@@ -563,7 +570,7 @@ pcbs:
         what: mountinghole
         where:
           ref: [matrix_pinky_top]
-          shift: [0u, 0.8u]
+          shift: [0.2us, 0.7us]
       matrix_pinky_bottom:
         what: mountinghole
         where:
@@ -589,7 +596,7 @@ pcbs:
         what: mountinghole
         where:
           ref: [mirror_matrix_pinky_top]
-          shift: [0u, 0.8u]
+          shift: [0.2us, 0.7us]
       mirror_matrix_pinky_bottom:
         what: mountinghole
         where:
@@ -615,4 +622,4 @@ pcbs:
         what: mountinghole
         where:
           ref.aggregate.parts: [matrix_inner_home, mirror_matrix_inner_home]
-          shift: [0u, -2.0u]
+          shift: [0u, -3.0u]
