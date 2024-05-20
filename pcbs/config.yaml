@@ -1,0 +1,679 @@
+units:
+  # unit size
+  us: U
+
+  # Proxy Spacing Variables
+  cirque_D: 43.86
+  cirque_R: cirque_D / 2
+  cirque_holder_D: 46.13
+  cirque_holder_R: cirque_holder_D / 2
+  cirque_cover_L: cirque_holder_D + 12
+  cirque_holder_L: cirque_holder_D + 16
+  cirque_holder_screw: cirque_holder_R - 1
+
+  # outlines value
+  outline_margin: 0.6
+  smoothing: 5
+  screwSize: 2.25
+  screwMargin: 2
+
+  # promicro pos
+  pro_x: 0
+  pro_y: 37
+  pro_rot: -90
+
+  # cirque_board pos
+  cir_board_x: 0
+  cir_board_y: 37
+
+  #cirque pos
+  cir_x: 0us
+  cir_y: -0.3us
+
+points:
+  zones:
+    matrix:
+      anchor:
+        shift: [130,-100]
+      key:
+        padding: 1us
+        spread: 1us
+      columns:
+        pinky:
+          key:
+            stagger: 
+            column_net: P4
+        ring:
+          key:
+            stagger: 0.7us
+            column_net: P5
+        middle:
+          key:
+            stagger: 0.4us
+            column_net: P18
+        index:
+          key:
+            stagger: -0.3us
+            column_net: P19
+        inner:
+          key:
+            stagger: -0.2us
+            column_net: P20
+      rows:
+        bottom:
+          row_net: P16
+          mirror.row_net: P8
+        home:
+          row_net: P14
+          mirror.row_net: P7
+        top:
+          row_net: P15
+          mirror.row_net: P6
+
+    thumbs:
+      key:
+        padding: 1us
+        spread: 1us
+      anchor:
+          ref: matrix_inner_bottom
+          shift: [-0.5us, -1.2us]
+      columns:
+        layer:
+          key:
+            splay: -15
+            column_net: P5
+        space:
+          key:
+            splay: -15
+            shift: [4,-2]
+            column_net: P18
+      rows:
+        cluster:
+          row_net: P10
+          mirror.row_net: P9
+
+    mousekey:
+      key:
+        padding: 1us
+        spread: 1us
+      anchor:
+        ref: matrix_inner_top
+        orient: 40
+        shift: [1us, -3.5us]
+      columns:
+        one:
+          key:
+            splay: -20
+            shift: [0,0]
+            column_net: P19
+        two:
+          key:
+            splay: 10
+            shift: [6.5,1]
+            column_net: P20
+      rows:
+        one:
+          row_net: P10
+          mirror.row_net: P9
+
+  mirror:
+    ref: matrix_inner_top
+    distance: 6us
+  rotate: -40
+
+outlines:
+  keys:
+    - what: rectangle
+      where: true
+      bound: false
+      size: [us-0.01,us-0.01]
+  key_hole:
+    - what: rectangle
+      where: true
+      bound: false
+      size: [14.02,14.02]
+  board:
+    - what: polygon
+      operation: stack
+      fillet: smoothing
+      points:
+        - ref: matrix_pinky_top
+          shift: [-1 * outline_margin * us,outline_margin * us]
+        - ref: mirror_matrix_pinky_top
+          shift: [-1 * outline_margin * us,outline_margin * us]
+
+        - ref: mirror_matrix_pinky_bottom
+          shift: [-1 * outline_margin * us,-1 * outline_margin * us]
+        - ref: mirror_thumbs_layer_cluster
+          shift: [-1 * outline_margin * us,-1 * outline_margin * us]
+        - ref: mirror_thumbs_space_cluster
+          shift: [-1 * outline_margin * us,-1 * outline_margin * us]
+        - ref: mirror_thumbs_layer_cluster
+          shift: [outline_margin * us,-1 * outline_margin * us]
+        - ref: mirror_thumbs_space_cluster
+          shift: [outline_margin * us,-1 * outline_margin * us]
+
+        - ref: mirror_mousekey_one_one
+          shift: [-1 * outline_margin * us,-1 * outline_margin * us]
+        - ref: mirror_mousekey_one_one
+          shift: [outline_margin * us,-1 * outline_margin * us]
+        - ref: mirror_mousekey_two_one
+          shift: [-1 * outline_margin * us,-1 * outline_margin * us]
+        - ref: mirror_mousekey_two_one
+          shift: [outline_margin * us,-1 * outline_margin * us]
+        - ref: mousekey_two_one
+          shift: [outline_margin * us,-1 * outline_margin * us]
+        - ref: mousekey_two_one
+          shift: [-1 * outline_margin * us,-1 * outline_margin * us]
+        - ref: mousekey_one_one
+          shift: [outline_margin * us,-1 * outline_margin * us]
+        - ref: mousekey_one_one
+          shift: [-1 * outline_margin * us,-1 * outline_margin * us]
+
+        - ref: thumbs_space_cluster
+          shift: [outline_margin * us,-1 * outline_margin * us]
+        - ref: thumbs_layer_cluster
+          shift: [outline_margin * us,-1 * outline_margin * us]
+        - ref: thumbs_space_cluster
+          shift: [-1 * outline_margin * us,-1 * outline_margin * us]
+        - ref: thumbs_layer_cluster
+          shift: [-1 * outline_margin * us,-1 * outline_margin * us]
+        - ref: matrix_pinky_bottom
+          shift: [-1 * outline_margin * us,-1 * outline_margin * us]
+
+# pcb parts
+  promicro:
+    - what: rectangle
+      size: [40 + 10, 24]
+      where:
+        ref.aggregate.parts: [matrix_inner_top, mirror_matrix_inner_top]
+        shift: [pro_x,pro_y]
+        rotate: pro_rot
+  cirque_board:
+    - what: rectangle
+      size: [12 + 4, 14 + 4]
+      where:
+          ref.aggregate.parts: [matrix_inner_home, mirror_matrix_inner_home]
+          shift: [cir_board_x,cir_board_y]
+
+
+# touch pad
+  touchpad_cover_hole:
+    - what: circle
+      radius: cirque_R
+      where:
+        ref.aggregate.parts: [matrix_inner_home, mirror_matrix_inner_home]
+        shift: [cir_x, cir_y]
+
+  touchpad_plate_hole:
+    - what: circle
+      radius: cirque_R-1
+      where:
+        ref.aggregate.parts: [matrix_inner_home, mirror_matrix_inner_home]
+        shift: [cir_x, cir_y]
+
+  touchpad_holder_hole_big:
+    - what: circle
+      radius: cirque_holder_R
+      where:
+        ref.aggregate.parts: [matrix_inner_home, mirror_matrix_inner_home]
+        shift: [cir_x, -0.5us]
+  touchpad_holder_hole_small:
+    - what: circle
+      radius: 0.4
+      where:
+        ref.aggregate.parts: [matrix_inner_home, mirror_matrix_inner_home]
+        shift: [cir_x, cir_y + cirque_holder_R - 0.1]
+  touchpad_holder_hole:
+    - name: touchpad_holder_hole_big
+    - operation: subtract
+      name: touchpad_holder_hole_small
+
+  touchpad_holder_outline:
+    - what: rectangle
+      size: cirque_holder_L
+      corner: 3
+      where:
+        ref.aggregate.parts: [matrix_inner_home, mirror_matrix_inner_home]
+        shift: [cir_x, cir_y]
+  touchpad_cover_outline:
+    - what: rectangle
+      size: cirque_cover_L
+      corner: 3
+      where:
+        ref.aggregate.parts: [matrix_inner_home, mirror_matrix_inner_home]
+        shift: [cir_x, cir_y]
+
+# pcb mount hole
+  mounting:
+    - what: circle
+      radius: screwSize
+      where:
+        ref: [matrix_pinky_top]
+        shift: [0.2us, 0.7us]
+    - what: circle
+      radius: screwSize
+      where:
+        ref: [matrix_pinky_bottom]
+        shift: [1us, -0.2us]
+    - what: circle
+      radius: screwSize
+      where:
+        ref: [matrix_inner_top]
+        shift: [0us, 1us]
+    - what: circle
+      radius: screwSize
+      where:
+        ref: [matrix_inner_top]
+        shift: [0us, 3us]
+    - what: circle
+      radius: screwSize
+      where:
+        ref: [matrix_inner_home]
+        shift: [2us, 0us]
+    - what: circle
+      radius: screwSize
+      where:
+        ref: [thumbs_space_cluster]
+        shift: [0.2us, 0.8us]
+
+    - what: circle
+      radius: screwSize
+      where:
+        ref: [mirror_matrix_pinky_top]
+        shift: [0.2us, 0.7us]
+    - what: circle
+      radius: screwSize
+      where:
+        ref: [mirror_matrix_pinky_bottom]
+        shift: [1us, -0.2us]
+    - what: circle
+      radius: screwSize
+      where:
+        ref: [mirror_matrix_inner_top]
+        shift: [0us, 1us]
+    - what: circle
+      radius: screwSize
+      where:
+        ref: [mirror_matrix_inner_top]
+        shift: [0us, 3us]
+    - what: circle
+      radius: screwSize
+      where:
+        ref: [mirror_matrix_inner_home]
+        shift: [2us, 0us]
+    - what: circle
+      radius: screwSize
+      where:
+        ref: [mirror_thumbs_space_cluster]
+        shift: [0.2us, 0.8us]
+
+    - what: circle
+      radius: screwSize
+      where:
+        ref.aggregate.parts: [matrix_inner_home, mirror_matrix_inner_home]
+        shift: [0us, -3.2us]
+  cover_mounting:
+    - what: circle
+      radius: screwSize + screwMargin
+      where:
+        ref.aggregate.parts: [matrix_inner_home, mirror_matrix_inner_home]
+        shift: [cir_x + cirque_holder_screw, cir_y +  cirque_holder_screw]
+    - what: circle
+      radius: screwSize + screwMargin
+      where:
+        ref.aggregate.parts: [matrix_inner_home, mirror_matrix_inner_home]
+        shift: [cir_x + -cirque_holder_screw, cir_y +  cirque_holder_screw]
+    - what: circle
+      radius: screwSize + screwMargin
+      where:
+        ref.aggregate.parts: [matrix_inner_home, mirror_matrix_inner_home]
+        shift: [cir_x + cirque_holder_screw, cir_y +  -cirque_holder_screw]
+    - what: circle
+      radius: screwSize + screwMargin
+      where:
+        ref.aggregate.parts: [matrix_inner_home, mirror_matrix_inner_home]
+        shift: [cir_x + -cirque_holder_screw, cir_y +  -cirque_holder_screw]
+  
+  # reset hole
+  reset_hole:
+    - what: circle
+      radius: 2
+      where:
+          ref.aggregate.parts: [matrix_middle_top, mirror_matrix_middle_top]
+          shift: [-20,0]
+          rotate: -90
+
+# output
+  touchpad_holder:
+    - name: touchpad_holder_outline
+    - operation: subtract
+      name: touchpad_holder_hole
+  touchpad_cover:
+    - name: touchpad_cover_outline
+    - operation: subtract
+      name: touchpad_cover_hole
+  top_plate:
+    - name: board
+    - operation: subtract
+      name: key_hole
+    - name: top_plate
+    - operation: subtract
+      name: touchpad_plate_hole
+    - name: top_plate
+    - operation: subtract
+      name: promicro
+    - name: top_plate
+    - operation: subtract
+      name: cirque_board
+    - name: top_plate
+    - operation: subtract
+      name: reset_hole
+  pcb_plate:
+    - name: board
+    - operation: subtract
+      name: touchpad_holder_outline
+    - name: pcb_plate
+    - operation: subtract
+      name: mounting
+
+    # - name: pcb_plate
+    # - operation: stack
+    #   name: promicro
+    # - name: pcb_plate
+    # - operation: stack
+    #   name: cover_mounting
+    # - name: pcb_plate
+    # - operation: stack
+    #   name: cirque_board
+
+# test
+  test:
+    - name: test
+    - operation: stack
+      name: keys
+    - name: test
+    - operation: stack
+      name: touchpad_cover
+    - name: test
+    - operation: stack
+      name: touchpad_holder
+    - name: test
+    - operation: stack
+      name: top_plate
+    - name: test
+    - operation: stack
+      name: pcb_plate
+    - name: test
+    - operation: stack
+      name: board
+
+
+pcbs:
+  test:
+    outlines:
+      main:
+        outline: test
+  trackpad_holder:
+    outlines:
+      main:
+        outline: touchpad_holder
+    footprints:
+      one:
+        what: mountinghole
+        where:
+          ref.aggregate.parts: [matrix_inner_home, mirror_matrix_inner_home]
+          shift: [cir_x + cirque_holder_screw, cir_y + cirque_holder_screw]
+      two:
+        what: mountinghole
+        where:
+          ref.aggregate.parts: [matrix_inner_home, mirror_matrix_inner_home]
+          shift: [cir_x + -cirque_holder_screw, cir_y + cirque_holder_screw]
+      three:
+        what: mountinghole
+        where:
+          ref.aggregate.parts: [matrix_inner_home, mirror_matrix_inner_home]
+          shift: [cir_x + cirque_holder_screw, cir_y + -cirque_holder_screw]
+      four:
+        what: mountinghole
+        where:
+          ref.aggregate.parts: [matrix_inner_home, mirror_matrix_inner_home]
+          shift: [cir_x + -cirque_holder_screw, cir_y + -cirque_holder_screw]
+  trackpad_cover:
+    outlines:
+      main:
+        outline: touchpad_cover
+    footprints:
+      one:
+        what: mountinghole
+        where:
+          ref.aggregate.parts: [matrix_inner_home, mirror_matrix_inner_home]
+          shift: [cir_x + cirque_holder_screw, cir_y + cirque_holder_screw]
+      two:
+        what: mountinghole
+        where:
+          ref.aggregate.parts: [matrix_inner_home, mirror_matrix_inner_home]
+          shift: [cir_x + -cirque_holder_screw, cir_y + cirque_holder_screw]
+      three:
+        what: mountinghole
+        where:
+          ref.aggregate.parts: [matrix_inner_home, mirror_matrix_inner_home]
+          shift: [cir_x + cirque_holder_screw, cir_y + -cirque_holder_screw]
+      four:
+        what: mountinghole
+        where:
+          ref.aggregate.parts: [matrix_inner_home, mirror_matrix_inner_home]
+          shift: [cir_x + -cirque_holder_screw, cir_y + -cirque_holder_screw]
+  pcb_plate:
+    outlines:
+      main:
+        outline: pcb_plate
+    footprints:
+      mx_switch:
+        what: mx
+        where: true
+        params:
+          keycaps: true
+          reverse: false
+          hotswap: false
+          from: "{{column_net}}"
+          to: "{{colrow}}"
+      diode:
+        what: diode
+        where: true
+        params:
+          from: "{{colrow}}"
+          to: "{{row_net}}"
+        adjust:
+          shift: [0, -5]
+      promicro:
+        what: promicro
+        params:
+          orientation: "down"
+        where:
+          ref.aggregate.parts: [matrix_inner_top, mirror_matrix_inner_top]
+          shift: [pro_x,pro_y]
+          rotate: pro_rot
+      oled:
+        what: oled
+        params:
+          side: "F"
+          SDA: P2
+          SCL: P3
+        where:
+          ref.aggregate.parts: [matrix_inner_home, mirror_matrix_inner_home]
+          shift: [cir_board_x - 5.75,cir_board_y - 6]
+          rotate: 90
+      reset:
+        what: button
+        params:
+          from: GND
+          to: RST
+        where:
+          ref.aggregate.parts: [matrix_middle_top, mirror_matrix_middle_top]
+          shift: [-20,0]
+          rotate: -90
+  top_plate:
+    outlines:
+      main:
+        outline: top_plate
+    footprints:
+      one:
+        what: mountinghole
+        where:
+          ref.aggregate.parts: [matrix_inner_home, mirror_matrix_inner_home]
+          shift: [cir_x + cirque_holder_screw, cir_y + cirque_holder_screw]
+      two:
+        what: mountinghole
+        where:
+          ref.aggregate.parts: [matrix_inner_home, mirror_matrix_inner_home]
+          shift: [cir_x + -cirque_holder_screw, cir_y + cirque_holder_screw]
+      three:
+        what: mountinghole
+        where:
+          ref.aggregate.parts: [matrix_inner_home, mirror_matrix_inner_home]
+          shift: [cir_x + cirque_holder_screw, cir_y + -cirque_holder_screw]
+      four:
+        what: mountinghole
+        where:
+          ref.aggregate.parts: [matrix_inner_home, mirror_matrix_inner_home]
+          shift: [cir_x + -cirque_holder_screw, cir_y + -cirque_holder_screw]
+      matrix_pinky_top:
+        what: mountinghole
+        where:
+          ref: [matrix_pinky_top]
+          shift: [0.2us, 0.7us]
+      matrix_pinky_bottom:
+        what: mountinghole
+        where:
+          ref: [matrix_pinky_bottom]
+          shift: [1us, -0.2us]
+      matrix_inner_top:
+        what: mountinghole
+        where:
+          ref: [matrix_inner_top]
+          shift: [0us, 1us]
+      matrix_inner_top_two:
+        what: mountinghole
+        where:
+          ref: [matrix_inner_top]
+          shift: [0us, 3us]
+      matrix_inner_home:
+        what: mountinghole
+        where:
+          ref: [matrix_inner_home]
+          shift: [2us, 0us]
+      thumbs_space_cluster:
+        what: mountinghole
+        where:
+          ref: [thumbs_space_cluster]
+          shift: [0.2us, 0.8us]
+
+      mirror_matrix_pinky_top:
+        what: mountinghole
+        where:
+          ref: [mirror_matrix_pinky_top]
+          shift: [0.2us, 0.7us]
+      mirror_matrix_pinky_bottom:
+        what: mountinghole
+        where:
+          ref: [mirror_matrix_pinky_bottom]
+          shift: [1us, -0.2us]
+      mirror_matrix_inner_top:
+        what: mountinghole
+        where:
+          ref: [mirror_matrix_inner_top]
+          shift: [0us, 1us]
+      mirror_matrix_inner_top_two:
+        what: mountinghole
+        where:
+          ref: [mirror_matrix_inner_top]
+          shift: [0us, 3us]
+      mirror_matrix_inner_home:
+        what: mountinghole
+        where:
+          ref: [mirror_matrix_inner_home]
+          shift: [2us, 0us]
+      mirror_thumbs_space_cluster:
+        what: mountinghole
+        where:
+          ref: [mirror_thumbs_space_cluster]
+          shift: [0.2us, 0.8us]
+
+      center:
+        what: mountinghole
+        where:
+          ref.aggregate.parts: [matrix_inner_home, mirror_matrix_inner_home]
+          shift: [0us, -3.2us]
+  bottom_plate:
+    outlines:
+      main:
+        outline: board
+    footprints:
+      matrix_pinky_top:
+        what: mountinghole
+        where:
+          ref: [matrix_pinky_top]
+          shift: [0.2us, 0.7us]
+      matrix_pinky_bottom:
+        what: mountinghole
+        where:
+          ref: [matrix_pinky_bottom]
+          shift: [1us, -0.2us]
+      matrix_inner_top:
+        what: mountinghole
+        where:
+          ref: [matrix_inner_top]
+          shift: [0us, 1us]
+      matrix_inner_top_two:
+        what: mountinghole
+        where:
+          ref: [matrix_inner_top]
+          shift: [0us, 3us]
+      matrix_inner_home:
+        what: mountinghole
+        where:
+          ref: [matrix_inner_home]
+          shift: [2us, 0us]
+      thumbs_space_cluster:
+        what: mountinghole
+        where:
+          ref: [thumbs_space_cluster]
+          shift: [0.2us, 0.8us]
+
+      mirror_matrix_pinky_top:
+        what: mountinghole
+        where:
+          ref: [mirror_matrix_pinky_top]
+          shift: [0.2us, 0.7us]
+      mirror_matrix_pinky_bottom:
+        what: mountinghole
+        where:
+          ref: [mirror_matrix_pinky_bottom]
+          shift: [1us, -0.2us]
+      mirror_matrix_inner_top:
+        what: mountinghole
+        where:
+          ref: [mirror_matrix_inner_top]
+          shift: [0us, 1us]
+      mirror_matrix_inner_top_two:
+        what: mountinghole
+        where:
+          ref: [mirror_matrix_inner_top]
+          shift: [0us, 3us]
+      mirror_matrix_inner_home:
+        what: mountinghole
+        where:
+          ref: [mirror_matrix_inner_home]
+          shift: [2us, 0us]
+      mirror_thumbs_space_cluster:
+        what: mountinghole
+        where:
+          ref: [mirror_thumbs_space_cluster]
+          shift: [0.2us, 0.8us]
+
+      center:
+        what: mountinghole
+        where:
+          ref.aggregate.parts: [matrix_inner_home, mirror_matrix_inner_home]
+          shift: [0us, -3.2us]

@@ -1,0 +1,208 @@
+units:
+  # unit size
+  us: U
+
+  # outlines value
+  outline_margin: 0.6
+  smoothing: 5
+  screwSize: 2.25
+  screwMargin: 2
+
+  # macbook
+  mbx: 304.1
+  mby: 212.4 - 20
+  mbr: 5
+
+  tpx: 121.92
+  tpy: 81.28
+  tpr: 2
+
+
+  #position
+  tpp: -0.5mby + 0.5tpy + 5
+  gap: 160
+  heig: -40
+  rot: -40
+
+
+points:
+  zones:
+    matrix:
+      anchor:
+        shift: [70,-100]
+      key:
+        padding: 1us
+        spread: 1us
+      columns:
+        pinky:
+          key:
+            stagger: 
+            column_net: P4
+        ring:
+          key:
+            stagger: 0.7us
+            column_net: P5
+        middle:
+          key:
+            stagger: 0.4us
+            column_net: P18
+        index:
+          key:
+            stagger: -0.3us
+            column_net: P19
+        inner:
+          key:
+            stagger: -0.2us
+            column_net: P20
+      rows:
+        bottom:
+          row_net: P16
+          mirror.row_net: P8
+        home:
+          row_net: P14
+          mirror.row_net: P7
+        top:
+          row_net: P15
+          mirror.row_net: P6
+
+    thumbs:
+      key:
+        padding: 1us
+        spread: 1us
+      anchor:
+          ref: matrix_inner_bottom
+          shift: [-0.5us, -1.2us]
+      columns:
+        layer:
+          key:
+            splay: -15
+            column_net: P5
+        space:
+          key:
+            splay: -15
+            shift: [4,-2]
+            column_net: P18
+      rows:
+        cluster:
+          row_net: P10
+          mirror.row_net: P9
+
+  mirror:
+    ref: thumbs_space_cluster
+    distance: gap
+
+  rotate: rot
+
+outlines:
+  trackpad:
+    - what: rectangle
+      size: [tpx,tpy]
+      corner: tpr
+      where:
+        ref.aggregate.parts: [matrix_middle_bottom, mirror_matrix_middle_bottom]
+        shift: [0.0us, tpp+heig]
+  keys:
+    - what: rectangle
+      where: true
+      bound: false
+      size: [us-0.01,us-0.01]
+  key_hole:
+    - what: rectangle
+      where: true
+      bound: false
+      size: [14.02,14.02]
+  board:
+    - what: rectangle
+      size: [mbx, mby]
+      corner: mbr
+      where:
+        ref.aggregate.parts: [matrix_middle_bottom, mirror_matrix_middle_bottom]
+        shift: [0us, heig]
+
+# pcb mount hole
+  mounting:
+    - what: circle
+      radius: screwSize
+      where:
+        ref: [matrix_pinky_top]
+        shift: [0.2us, 0.7us]
+    - what: circle
+      radius: screwSize
+      where:
+        ref: [matrix_pinky_bottom]
+        shift: [1us, -0.2us]
+    - what: circle
+      radius: screwSize
+      where:
+        ref: [matrix_inner_top]
+        shift: [0us, 1us]
+    - what: circle
+      radius: screwSize
+      where:
+        ref: [matrix_inner_top]
+        shift: [2us, 1.8us]
+    - what: circle
+      radius: screwSize
+      where:
+        ref: [matrix_inner_home]
+        shift: [2us, 0us]
+    - what: circle
+      radius: screwSize
+      where:
+        ref: [thumbs_space_cluster]
+        shift: [0.2us, 0.8us]
+
+    - what: circle
+      radius: screwSize
+      where:
+        ref: [mirror_matrix_pinky_top]
+        shift: [0.2us, 0.7us]
+    - what: circle
+      radius: screwSize
+      where:
+        ref: [mirror_matrix_pinky_bottom]
+        shift: [1us, -0.2us]
+    - what: circle
+      radius: screwSize
+      where:
+        ref: [mirror_matrix_inner_top]
+        shift: [0us, 1us]
+    - what: circle
+      radius: screwSize
+      where:
+        ref: [mirror_matrix_inner_top]
+        shift: [2us, 1.8us]
+    - what: circle
+      radius: screwSize
+      where:
+        ref: [mirror_matrix_inner_home]
+        shift: [2us, 0us]
+    - what: circle
+      radius: screwSize
+      where:
+        ref: [mirror_thumbs_space_cluster]
+        shift: [0.2us, 0.8us]
+
+    - what: circle
+      radius: screwSize
+      where:
+        ref.aggregate.parts: [matrix_inner_home, mirror_matrix_inner_home]
+        shift: [0us, -3.0us]
+
+# output
+  top_plate:
+    - name: board
+    - operation: subtract
+      name: key_hole
+    - name: top_plate
+    - operation: subtract
+      name: trackpad
+    
+  pcb_plate:
+    - name: board
+    - operation: subtract
+      name: mounting
+  bottom_plate:
+    - name: bottom_plate
+    - operation: add
+      name: board
